@@ -485,7 +485,7 @@ command! -nargs=?          WordThesaurus     :perl word_look_up_as('thesaurus', 
 command! -nargs=?          WordSpell         :perl word_look_up_as('spelling',  <f-args>, scalar VIM::Eval('expand("<cword>")')); 
 command! -nargs=?          WordAnagram       :perl word_look_up_as('anagram',   <f-args>, scalar VIM::Eval('expand("<cword>")')); 
 command! -nargs=0 -range=% WordCheckSpelling :perl word_check_spelling(<line1>, <line2>)
-command! WordShowMisspelled :if(word_misspelled =~ '\S') | set ft= | exec 'syn keyword WordMisspelled '. word_misspelled | hi link WordMisspelled error | endif
+command! WordShowMisspelled :if(word_misspelled =~ '\S') | set ft= | let word_foo=&iskeyword | set iskeyword=a-z,A-Z | exec 'syn keyword WordMisspelled '. word_misspelled | hi link WordMisspelled error | redraw | execute 'set iskeyword='. word_foo | endif
 command! WordHideMisspelled :hi link WordMisspelled none | filetype detect
 command! Wordfirst        :cfirst | exe "let @/ ='" . expand("<cword>"). "'"
 command! Wordlast         :clast  | exe "let @/ ='" . expand("<cword>"). "'"
