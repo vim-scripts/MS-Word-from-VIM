@@ -1,0 +1,112 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1082
+
+To interact with Microsoft Word from VIM
+Currently supports use of Word's Thesaurus and Speller
+
+Copyright (C) 2004 Suresh Govindachar  <initial><last name><at><yahoo>
+
+System Requirements:
+  
+   Windows (with MS Word)
+   VIM with embedded perl support
+   The perl module Win32::OLE (good way to get this is to have external perl)
+
+Exports: 
+ 
+   The following four commands are exported to the end-user:
+   
+      :WordThesaurus    [<cword>]
+      :WordSpell        [<cword>]
+      :WordAnagram      [<cword>]
+      :<range>WordCheckSpelling 
+   
+   In regard to the first three commands:
+   
+    - Each command can be issued with no arguments or with one argument.
+      When no argument is provided, the <cword> (see :help cword) is 
+      used as the argument.
+    - After execution, the "result" is appended below the current line.
+    - The "result" for the Thesaurus command is all 
+      the synonyms and the antonyms.
+    - The "result" for the Spell command is all 
+      the spelling suggestions.
+    - The "result" for the Anagram command is all 
+      the anagrams of the given letters.
+   
+   Try the following:
+   
+      :WordThesaurus beautiful
+      :WordAnagram   abt
+      :WordSpell     helo
+      :WordSpell     b?t*
+   
+   In regard to the fourth command (:<range>WordCheckSpelling):
+      
+    - The default range is the whole buffer -- in order for
+      quickfix commands to work, there has to be a file 
+      associated with the buffer.
+   
+    - Results are:
+   
+      - highlighting as Error each misspelled word in the range
+        (the filetype is set to nothing so that the only colored
+        stuff are the misspelled words)
+   
+      - ability to use the quickfix commands (:cfirst, :cn, etc) to 
+        visit each misspelled word and to look at suggestions on spelling it.
+   
+      - Sub commands (of the :<range>WordCheckSpelling command):
+   
+           :WordShowMisspelled
+                Highlights misspelled words (there won't be any other highlighting)                 
+           :WordHideMisspelled
+                Restores highlighting based on filetype 
+           The next five commands extend the corresponding quickfix 
+                commands (:cfirst, :clast, :cc, :cn, :cp) by
+                loading the search register with the appropriate 
+                misspelled word
+                    :Wordfirst
+                    :Wordlast
+                    :Wordc
+                    :Wordn
+                    :Wordp
+   
+      - Optional (controlled by g:no_plugin_maps or g:no_word_maps) 
+        normal-mode maps:
+           <Leader>ws :WordShowMisspelled<CR>
+           <Leader>wh :WordHideMisspelled<CR>
+           <Leader>wc :Wordc<CR>
+           <Leader>wn :Wordn<CR>
+           <Leader>wp :Wordp<CR>
+
+Tested on:
+
+   Windows 98 with Word 97 (and Vim 6.3, ActiveState's perl 5.8).
+   Anagram and WildCard NOT supported by Microsoft in later versions of MSWord -- see
+   http://support.microsoft.com/default.aspx?scid=kb;en-us;224722 !!!
+
+Known issue:
+  
+   Sometimes Windows and/or Word is sluggish and things
+   time-out with a "no service available" or some such 
+   error message -- when this happens, just reissue the command.
+
+Acknowledgment:                                                              
+
+   Although I conceived and developed this plugin, I
+   learnt how to interact with Microsoft Word for 
+   accessing its Thesaurus and Spelling from: 
+
+    - Chad DeMeyer   (microsoft.public.word.word97vba)
+    - Steven Manross (perl-win32-users@listserv.ActiveState.com)
+    - Greg Chapman   (perl-win32-users@listserv.ActiveState.com)
+    - http://www.perlmonks.com/index.pl?node_id=119006
+
+Disclaimer:                                                                 
+
+   The material provided here is provided as-is without any warranty --
+   without even the implied warranty of merchantability or fitness for a
+   particular purpose.  The author assumes no responsibility for errors or
+   omissions or for any sort of damages resulting from the use of or
+   reliance on the provided material.
+
